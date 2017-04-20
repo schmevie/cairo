@@ -15,7 +15,7 @@ var play_state = {
 
     update: function() {
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            console.log('Inside PLAY STATE Testing');
+            console.log('Inside PLAY STATE Testing again');
         }
     }
 };
