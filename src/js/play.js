@@ -15,7 +15,7 @@ var play_state = {
 
     update: function() {
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            console.log('Inside PLAU STATE');
+            console.log('Inside PLAY STATE');
         }
     }
 };
@@ -28,11 +28,11 @@ var dialogueWindow = function(game, x, y) {
     this.dialogue;
     this.dialogueText = "TESTING";
     this.style = {
-        font: "24px Arial", 
-        fill: "#ff0044", 
-        wordWrap: true, 
-        wordWrapWidth: this.width, 
-        align: "center", 
+        font: "24px Arial",
+        fill: "#ff0044",
+        wordWrap: true,
+        wordWrapWidth: this.width,
+        align: "center",
         backgroundColor: "#ffff00"
     }
     this.dialogue = game.add.text(0, 0, this.dialogueText, this.style);
