@@ -7,7 +7,7 @@ var load_state = {
         game.load.audio('MainMenuMusic', 'assets/audio/Placeholder_MainMenuMusic.ogg');
 
         game.load.image('dialogue-bg', 'assets/img/dialogue-bg.png');
-        game.load.image('child', 'assets/img/block-player.png');
+        game.load.image('Player', 'assets/img/block-player.png');
         game.load.json('dialogue', 'assets/json/dialogue.json');
     },
 

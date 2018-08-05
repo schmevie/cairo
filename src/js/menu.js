@@ -2,33 +2,30 @@ var menu_state = {
     create: function() 
     {
         game.stage.backgroundColor = "#000000";
-        var background = game.add.sprite(0, 0, 'MainMenuBackground');
-        background.alpha = 0;
-        game.add.tween(background).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+        BackgroundImage = game.add.sprite(0, 0, 'MainMenuBackground');
+        BackgroundImage.alpha = 0;
+        game.add.tween(BackgroundImage).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
 
-        var style = { font: "30px Helvetica", fill: "#ffffff" };
+        FontStyle = { font: "30px Helvetica", fill: "#ffffff" };
         
-        music = game.add.audio('MainMenuMusic');
-        music.play();
-
-        //game.add.text(200, 210, "Cairo", style);
+        BackgroundMusic = game.add.audio('MainMenuMusic');
+        BackgroundMusic.loopFull();
 
         //Create start help text
-        var startText = game.add.text(0, 0, "Press Spacebar to Start", style);
-        startText.alignIn(background, Phaser.BOTTOM_CENTER, 0, -100);
+        var startText = game.add.text(0, 0, "Press Any Key to Start", FontStyle);
+        startText.alignIn(BackgroundImage, Phaser.BOTTOM_CENTER, 0, -100);
         startText.alpha = 0;
+        game.add.tween(startText).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 1, 1000, true); //Fade start text in and out
 
-        game.add.tween(startText).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 1, 1000, true);
-
-        // Call the 'start' function when pressing the spacebar
-        var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        spaceKey.onDown.add(this.start, this); 
-
+        //call start function on any key
+        game.input.keyboard.onPressCallback = this.start;
     },
 
     // Start the actual game
     start: function() 
     {
-        this.game.state.start('play');
+        //set back to null
+        game.input.keyboard.onPressCallback = null;
+        game.state.start('play');
     }
 };

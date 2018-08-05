@@ -4,13 +4,15 @@ var play_state = {
     // No more 'preload' function, since it is already done in the 'load' state
 
     create: function() {
+        BackgroundMusic.fadeOut(2000);
+        
         this.dialogueJSON = game.cache.getJSON('dialogue');
         this.text = game.add.text(100, 100, "Current Phaser version: " + this.dialogueJSON, { fill: '#ffffff' });
         this.text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
         this.dialogueWindow = new dialogueWindow(game, 0, 350);
 
-        this.testPlayer = game.add.sprite(0, 0, 'child');
+        this.testPlayer = game.add.sprite(0, 0, 'Player');
 
         //this.dialogueWindow.setText('Evie');
     },
@@ -69,7 +71,7 @@ var dialogueWindow = function(game, x, y) {
     this.dialogue.x = Math.floor(this.x + this.width / 2);
     this.dialogue.y = Math.floor(this.y + this.height / 2) - 60;
 
-    this.addChild(game.make.sprite(30, 40, 'child'));
+    this.addChild(game.make.sprite(30, 40, 'Player'));
 }
 
 dialogueWindow.prototype = Object.create(Phaser.Sprite.prototype);
