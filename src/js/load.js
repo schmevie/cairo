@@ -5,6 +5,7 @@ var load_state = {
         //Main Menu Files
         game.load.image('MainMenuBackground', 'assets/img/Placeholder_Background.png');
         game.load.audio('MainMenuMusic', 'assets/audio/Placeholder_MainMenuMusic.ogg');
+        game.load.image('Image_Dust', 'assets/img/Image_Dust.png');
 
         game.load.image('dialogue-bg', 'assets/img/dialogue-bg.png');
         game.load.image('Player', 'assets/img/block-player.png');

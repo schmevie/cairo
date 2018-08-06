@@ -4,8 +4,8 @@ var play_state = {
     // No more 'preload' function, since it is already done in the 'load' state
 
     create: function() {
-        BackgroundMusic.fadeOut(2000);
-        
+//        BackgroundImage = game.add.sprite(0, 0, 'MainMenuBackground');
+
         this.dialogueJSON = game.cache.getJSON('dialogue');
         this.text = game.add.text(100, 100, "Current Phaser version: " + this.dialogueJSON, { fill: '#ffffff' });
         this.text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
