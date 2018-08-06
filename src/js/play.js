@@ -1,43 +1,59 @@
 
-var play_state = {
-
+var play_state = 
+{
     // No more 'preload' function, since it is already done in the 'load' state
 
-    create: function() {
-//        BackgroundImage = game.add.sprite(0, 0, 'MainMenuBackground');
+    create: function() 
+    {
+        ImageBackground = game.add.sprite(0, 0, 'MainMenuBackground');
+        FadeInImage(ImageBackground);
+        AudioBackgroundMusic.restart();
+        AudioBackgroundMusic.loopFull();
+        StartDustParticle();
 
-        this.dialogueJSON = game.cache.getJSON('dialogue');
-        this.text = game.add.text(100, 100, "Current Phaser version: " + this.dialogueJSON, { fill: '#ffffff' });
-        this.text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
+        DialogueWindow = new dialogueWindow(game, 'New String');
 
-        this.dialogueWindow = new dialogueWindow(game, 0, 350);
+        DialogueWindow.alignIn(ImageBackground, Phaser.BOTTOM_CENTER, 0, -30);
 
-        this.testPlayer = game.add.sprite(0, 0, 'Player');
+        DialogueWindow.alpha = 0;
+        game.add.tween(DialogueWindow).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 2000);
+        
+
+        //this.dialogueJSON = game.cache.getJSON('dialogue');
+        //this.text = game.add.text(100, 100, "Current Phaser version: " + this.dialogueJSON, { fill: '#ffffff' });
+        //this.text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
+
+        //this.dialogueWindow = new dialogueWindow(game, 0, 350);
+
+        //this.testPlayer = game.add.sprite(0, 0, 'Player');
 
         //this.dialogueWindow.setText('Evie');
     },
 
-    update: function() {
-        if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            console.log('Inside PLAY STATE Testing again and again');
-        }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-            this.testPlayer.y -= 4;
-        }
-        if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-            this.testPlayer.x -= 4;
-        }   
-        if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-            this.testPlayer.x += 4;
-        }   
-        if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-            this.testPlayer.y += 4;
-        }                                 
+    update: function() 
+    {
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) 
+        // {
+        //     console.log('Inside PLAY STATE Testing again and again');
+        // }
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+        //     this.testPlayer.y -= 4;
+        // }
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+        //     this.testPlayer.x -= 4;
+        // }   
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+        //     this.testPlayer.x += 4;
+        // }   
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+        //     this.testPlayer.y += 4;
+        // }                                 
     }
 };
 
 
-var dialogueCharacter = function () {
+var dialogueCharacter = function () 
+{
     //Variables
     this.dialogueTree = game.cache.getJSON('dialogue');
     this.happiness = 100;
@@ -51,27 +67,22 @@ dialogueCharacter.prototype = Object.create(Phaser.Sprite.prototype);
 dialogueCharacter.prototype.constructor = dialogueCharacter;
 
 //Window constructor
-var dialogueWindow = function(game, x, y) {
-    Phaser.Sprite.call(this, game, x, y, 'dialogue-bg');
+var dialogueWindow = function(game, startingString) 
+{
+    Phaser.Sprite.call(this, game, 0, 0, 'Image_DialogueBox');
     game.add.existing(this);
+    //this.scale.x = this.scale.x + (100 * (1 - this.scale.x / game.width));
+    //this.alpha = 0.5;
 
-    this.dialogue;
-    this.dialogueText = "TESTING";
-    this.style = {
-        font: "24px Arial",
-        fill: "#ff0044",
-        wordWrap: true,
-        wordWrapWidth: this.width,
-        align: "center",
-        backgroundColor: "#3f4ff00"
-    }
-    this.dialogue = game.add.text(0, 0, this.dialogueText, this.style);
-    this.dialogue.anchor.set(0.5);
+    CurrentString = "";
+    CurrentStringShowing = startingString;
+    TextDialogue = game.add.text(0, 0, CurrentString, FontStyle);
+    this.addChild(TextDialogue);
+    TextDialogue.alignIn(this, Phaser.TOP_LEFT, -100, -20);
+    TextDialogue.alpha = 1;
 
-    this.dialogue.x = Math.floor(this.x + this.width / 2);
-    this.dialogue.y = Math.floor(this.y + this.height / 2) - 60;
-
-    this.addChild(game.make.sprite(30, 40, 'Player'));
+    //TextDialogue.alignIn(this, Phaser.CENTER_CENTER, 0, 0);
+    //this.addChild(game.make.sprite(30, 40, 'Player'));
 }
 
 dialogueWindow.prototype = Object.create(Phaser.Sprite.prototype);
@@ -80,18 +91,24 @@ dialogueWindow.prototype.constructor = dialogueWindow;
 /**
  * Automatically called by World.update
  */
-dialogueWindow.prototype.update = function() {
+dialogueWindow.prototype.update = function() 
+{
+    if (CurrentString.length != CurrentStringShowing.length)
+    {
 
+    }
     // if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
     //     console.log('Inside DIALOGUE WINDOW');
     // }
-
 };
 
-dialogueWindow.prototype.setText = function(text) {
-    this.dialogue.setText(text);
-}
+// dialogueWindow.prototype.setText = function(newText) 
+// {
+//     CurrentString = newText;
+//     TextDialogue.setText(CurrentString);
+// }
 
-dialogueWindow.prototype.testFunc = function() {
-    console.log('carl');
-}
+// dialogueWindow.prototype.testFunc = function() 
+// {
+//     console.log('carl');
+// }
