@@ -114,12 +114,20 @@ dialogueWindow.prototype.update = function()
 
 dialogueWindow.prototype.NextMessage = function() 
 {
+    if (RemainTextToShow.length > 0)
+    {
+        CurrentString = CurrentString.concat(RemainTextToShow);
+        RemainTextToShow = "";
+        TextDialogue.setText(CurrentString);
+        return;
+    }
+
     CurrentString = "";
     CurrentJSONIndex += 1;
 
     if (!DialogueDataJSON[CurrentJSONIndex])
         return;
-    
+
     var nextText = DialogueDataJSON[CurrentJSONIndex].m;
     
     if (nextText)
