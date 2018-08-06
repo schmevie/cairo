@@ -11,14 +11,19 @@ var play_state =
         AudioBackgroundMusic.loopFull();
         StartDustParticle();
 
-        DialogueWindow = new dialogueWindow(game, 'New String');
+        DialogueJSON = game.cache.getJSON('dialogue');
+
+        DialogueWindow = new dialogueWindow(game, DialogueJSON);
 
         DialogueWindow.alignIn(ImageBackground, Phaser.BOTTOM_CENTER, 0, -30);
 
         DialogueWindow.alpha = 0;
         tweenDialogueWindowFade = game.add.tween(DialogueWindow).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 2000);
 
-        //this.dialogueJSON = game.cache.getJSON('dialogue');
+
+        SpaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        SpaceKey.onDown.add(DialogueWindow.NextMessage, this); 
+
         //this.text = game.add.text(100, 100, "Current Phaser version: " + this.dialogueJSON, { fill: '#ffffff' });
         //this.text.setShadow(2, 2, 'rgba(0,0,0,0.5)', 0);
 
@@ -66,15 +71,17 @@ dialogueCharacter.prototype = Object.create(Phaser.Sprite.prototype);
 dialogueCharacter.prototype.constructor = dialogueCharacter;
 
 //Window constructor
-var dialogueWindow = function(game, startingString) 
+var dialogueWindow = function(game, dialogueJSON) 
 {
     Phaser.Sprite.call(this, game, 0, 0, 'Image_DialogueBox');
     game.add.existing(this);
     //this.scale.x = this.scale.x + (100 * (1 - this.scale.x / game.width));
     //this.alpha = 0.5;
 
+    DialogueDataJSON = dialogueJSON;
+    CurrentJSONIndex = 0;
     CurrentString = "";
-    RemainTextToShow = startingString;
+    RemainTextToShow = DialogueDataJSON[CurrentJSONIndex].m;
     TextDialogue = game.add.text(0, 0, CurrentString, FontStyle);
     this.addChild(TextDialogue);
     TextDialogue.alignIn(this, Phaser.TOP_LEFT, -100, -20);
@@ -82,7 +89,6 @@ var dialogueWindow = function(game, startingString)
 
     TextUpdateSpeed = 50
     TimeElapse = 0;
-    AdvanceText = false;
     //TextDialogue.alignIn(this, Phaser.CENTER_CENTER, 0, 0);
     //this.addChild(game.make.sprite(30, 40, 'Player'));
 }
@@ -104,16 +110,34 @@ dialogueWindow.prototype.update = function()
         RemainTextToShow = RemainTextToShow.slice(1);
         TextDialogue.setText(CurrentString);
     }
-    // if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-    //     console.log('Inside DIALOGUE WINDOW');
-    // }
 };
 
-// dialogueWindow.prototype.setText = function(newText) 
-// {
-//     CurrentString = newText;
-//     TextDialogue.setText(CurrentString);
-// }
+dialogueWindow.prototype.NextMessage = function() 
+{
+    CurrentString = "";
+    CurrentJSONIndex += 1;
+
+    if (!DialogueDataJSON[CurrentJSONIndex])
+        return;
+    
+    var nextText = DialogueDataJSON[CurrentJSONIndex].m;
+    
+    if (nextText)
+    {
+        RemainTextToShow = nextText;
+        return;
+    }
+
+    nextText = DialogueDataJSON[CurrentJSONIndex].question;
+
+    if (nextText)
+    {
+        RemainTextToShow = nextText
+        return;
+    }
+
+    RemainTextToShow = "";
+}
 
 // dialogueWindow.prototype.testFunc = function() 
 // {
