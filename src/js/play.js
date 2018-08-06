@@ -16,8 +16,7 @@ var play_state =
         DialogueWindow.alignIn(ImageBackground, Phaser.BOTTOM_CENTER, 0, -30);
 
         DialogueWindow.alpha = 0;
-        game.add.tween(DialogueWindow).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 2000);
-        
+        tweenDialogueWindowFade = game.add.tween(DialogueWindow).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 2000);
 
         //this.dialogueJSON = game.cache.getJSON('dialogue');
         //this.text = game.add.text(100, 100, "Current Phaser version: " + this.dialogueJSON, { fill: '#ffffff' });
@@ -75,12 +74,15 @@ var dialogueWindow = function(game, startingString)
     //this.alpha = 0.5;
 
     CurrentString = "";
-    CurrentStringShowing = startingString;
+    RemainTextToShow = startingString;
     TextDialogue = game.add.text(0, 0, CurrentString, FontStyle);
     this.addChild(TextDialogue);
     TextDialogue.alignIn(this, Phaser.TOP_LEFT, -100, -20);
     TextDialogue.alpha = 1;
 
+    TextUpdateSpeed = 50
+    TimeElapse = 0;
+    AdvanceText = false;
     //TextDialogue.alignIn(this, Phaser.CENTER_CENTER, 0, 0);
     //this.addChild(game.make.sprite(30, 40, 'Player'));
 }
@@ -93,9 +95,14 @@ dialogueWindow.prototype.constructor = dialogueWindow;
  */
 dialogueWindow.prototype.update = function() 
 {
-    if (CurrentString.length != CurrentStringShowing.length)
-    {
+    TimeElapse += game.time.elapsed
 
+    if (TimeElapse >= TextUpdateSpeed && RemainTextToShow.length > 0)
+    {
+        TimeElapse = 0;
+        CurrentString = CurrentString.concat(RemainTextToShow.charAt(0));
+        RemainTextToShow = RemainTextToShow.slice(1);
+        TextDialogue.setText(CurrentString);
     }
     // if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
     //     console.log('Inside DIALOGUE WINDOW');
